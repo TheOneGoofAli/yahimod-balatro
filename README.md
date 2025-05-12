@@ -11,4 +11,4 @@ The YAHIMOD's a (somewhat unbalanced) mess of custom jokers, tarots and blinds, 
    ![\AppData\Roaming\Balatro\mods](https://i.imgur.com/WaVn9Jd.png)
 4) Launch the game and click the Mods button, it should've loaded properly if you followed the steps correctly!
 
- ![Ingame look at it](![Mods menu](https://i.imgur.com/cJKqefE.png))
+ ![Ingame look at it](https://i.imgur.com/cJKqefE.png)
