@@ -2946,6 +2946,7 @@ SMODS.Joker{
                     "{C:green}#1# out of #2#{} times{}"}
     },
     atlas = 'halfblueprint',
+	pixel_size = { w = 71 , h = 64 },
     rarity = 2,
     cost = 7,
     pools = {["Yahimodaddition"] = true},
