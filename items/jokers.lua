@@ -5741,7 +5741,7 @@ end
 -- get name of joker
 function getJokerName(card)
 	local _cardname = localize{type = 'name_text', set = 'Joker', key = card.config.center.key}
-	if type(_cardname) == 'string' and _cardname ~= "ERROR" then return _cardname
+	if type(_cardname) == 'string' and _cardname ~= "ERROR" then return _cardname end
 end
 
 -- get id of joker
