@@ -7,6 +7,27 @@
 ----------------------------------------------------------
 ----------- MOD CODE -------------------------------------
 
+-- get name of joker
+function getJokerName(card)
+	if not card then return end
+	local exists = pcall(function()
+		if G.localization.descriptions['Joker'][card.config.center.key] then return true end
+	end)
+	if not exists then return end
+	return localize{type = 'name_text', set = 'Joker', key = card.config.center.key}
+end
+
+-- get id of joker
+function getJokerID(card)
+    if G.jokers then
+        local _selfid = 0
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i] == card then _selfid = i end
+        end
+        return _selfid
+    end
+end
+
 SMODS.Atlas{
     key = 'Jokers',
     path = 'Jokers.png',
@@ -1615,8 +1636,8 @@ SMODS.Joker{
                 if G.jokers.cards[i] == card then _selfid = i end
             end
             if _selfid and G.jokers.cards[_selfid+1] then
-                local _cname = localize{type = 'name_text', set = 'Joker', key = G.jokers.cards[_selfid+1].config.center.key}
-                if type(_cname) == 'string' and _cname ~= "ERROR" then
+                local _cname = getJokerName(G.jokers.cards[_selfid+1])
+                if type(_cname) == 'string' then
 					_, nvow = string.gsub(_cname, "[AEIOUaeiou]", "")
 					card.ability.extra.chiptotal = nvow * card.ability.extra.chipamt
 				else
@@ -2469,9 +2490,9 @@ SMODS.Joker{
             _streak = true
             for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i+1] then
-					local _cardname = localize{type = 'name_text', set = 'Joker', key = G.jokers.cards[i].config.center.key}
-					local _cardnamenext = localize{type = 'name_text', set = 'Joker', key = G.jokers.cards[i+1].config.center.key}
-					if type(_cardname) == 'string' and type(_cardnamenext) == 'string' and _cardname ~= "ERROR" and _cardnamenext ~= "ERROR" and G.jokers.cards[i+1] then
+					local _cardname = getJokerName(G.jokers.cards[i])
+					local _cardnamenext = getJokerName(G.jokers.cards[i+1])
+					if type(_cardname) == 'string' and type(_cardnamenext) == 'string' and G.jokers.cards[i+1] then
 						if string.len(_cardnamenext) < string.len(_cardname) then _streak = false end
 					end
 				end
@@ -5737,25 +5758,6 @@ function explodeCard(card)
     card:start_dissolve()
     card = nil
 end
-
--- get name of joker
-function getJokerName(card)
-	local _cardname = localize{type = 'name_text', set = 'Joker', key = card.config.center.key}
-	if type(_cardname) == 'string' and _cardname ~= "ERROR" then return _cardname end
-end
-
--- get id of joker
-function getJokerID(card)
-    if G.jokers then
-        local _selfid = 0
-        for i = 1, #G.jokers.cards do
-            if G.jokers.cards[i] == card then _selfid = i end
-        end
-        return _selfid
-    end
-end
-
-
 
 local upd = Game.update
 function Game:update(dt)
