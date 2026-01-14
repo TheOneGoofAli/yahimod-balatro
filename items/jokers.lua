@@ -1615,11 +1615,13 @@ SMODS.Joker{
                 if G.jokers.cards[i] == card then _selfid = i end
             end
             if _selfid and G.jokers.cards[_selfid+1] then
-                local _cname = G.jokers.cards[_selfid+1].config.center.name
-                if string.find(_cname,"j_") then _cname = G.jokers.cards[_selfid+1].config.center.loc_txt.name end
-
-                _, nvow = string.gsub(_cname, "[AEIOUaeiou]", "")
-                card.ability.extra.chiptotal = nvow * card.ability.extra.chipamt
+                local _cname = localize{type = 'name_text', set = 'Joker', key = G.jokers.cards[_selfid+1].config.center.key}
+                if type(_cname) == 'string' and _cname ~= "ERROR" then
+					_, nvow = string.gsub(_cname, "[AEIOUaeiou]", "")
+					card.ability.extra.chiptotal = nvow * card.ability.extra.chipamt
+				else
+					card.ability.extra.chiptotal = 0
+				end
             else
                 card.ability.extra.chiptotal = 0
             end
@@ -2466,18 +2468,16 @@ SMODS.Joker{
         if G.jokers and G.jokers.cards then
             _streak = true
             for i = 1, #G.jokers.cards do
-            if G.jokers.cards[i+1] then
-            local _cardname = G.jokers.cards[i].config.center.name
-            if string.find(_cardname,"j_") and G.jokers.cards[i].config.center.loc_txt then _cardname = G.jokers.cards[i].config.center.loc_txt.name end
-            local _cardnamenext = G.jokers.cards[i+1].config.center.name
-            if string.find(_cardnamenext,"j_") and G.jokers.cards[i+1].config.center.loc_txt then _cardnamenext = G.jokers.cards[i+1].config.center.loc_txt.name end
-            if _cardnamenext and G.jokers.cards[i+1] then
-                if string.len(_cardnamenext) < string.len(_cardname) then _streak = false end
-                end
-            end
-        end
-    end
-    if _streak == false then card.ability.extra.active = "Inactive" else card.ability.extra.active = "Active!" end
+				if G.jokers.cards[i+1] then
+					local _cardname = localize{type = 'name_text', set = 'Joker', key = G.jokers.cards[i].config.center.key}
+					local _cardnamenext = localize{type = 'name_text', set = 'Joker', key = G.jokers.cards[i+1].config.center.key}
+					if type(_cardname) == 'string' and type(_cardnamenext) == 'string' and _cardname ~= "ERROR" and _cardnamenext ~= "ERROR" and G.jokers.cards[i+1] then
+						if string.len(_cardnamenext) < string.len(_cardname) then _streak = false end
+					end
+				end
+			end
+		end
+		if _streak == false then card.ability.extra.active = "Inactive" else card.ability.extra.active = "Active!" end
     end,
 
     calculate = function(self, card, context)
@@ -5740,9 +5740,8 @@ end
 
 -- get name of joker
 function getJokerName(card)
-    local _cardname = card.config.center.name
-    if string.find(_cardname,"j_") then _cardname = card.config.center.loc_txt.name end
-    return _cardname
+	local _cardname = localize{type = 'name_text', set = 'Joker', key = card.config.center.key}
+	if type(_cardname) == 'string' and _cardname ~= "ERROR" then return _cardname
 end
 
 -- get id of joker
